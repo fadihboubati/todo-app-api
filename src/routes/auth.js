@@ -18,7 +18,7 @@ router.post('/signin', basicAuth, async (req, res) => {
 
 router.post('/signup', async (req, res, next) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, role } = req.body;
 
         const saltRounds = 10 // by default, "the cost-factor"
         const salt = bcrypt.genSaltSync(saltRounds);
@@ -31,7 +31,7 @@ router.post('/signup', async (req, res, next) => {
         const existingUser = await userModel.findOne({ username });
         if (existingUser) return res.status(403).send("User already exist");
 
-        const user = new userModel({ username, password: hashedPassword });
+        const user = new userModel({ username, password: hashedPassword, role: role ? role : "user" });
 
         await user.save();
         res.status(200).json({

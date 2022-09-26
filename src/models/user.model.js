@@ -21,7 +21,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
 
-    }
+    },
+
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+    },
 
     // salt: {
     //     type: String,
@@ -34,6 +39,14 @@ UserSchema.virtual('token').get(function () {
     var token = jwt.sign({ username: this.username, password: this.password }, PRIVATEKEY);
     return token;
 });
+
+UserSchema.virtual('capabilities').get(function () {
+    const acl = {
+        user: ["read", "update"],
+        admin: ["read", "create", "update", "delete"]
+    };
+    return acl[this.role];
+})
 
 
 const UserModer = mongoose.model("user", UserSchema);
