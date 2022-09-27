@@ -62,7 +62,7 @@ UserModer.authenticateToken = async function (token, next) {
         // 2. second, check if we have a username with the same one that the token handle it
         const user = await this.findOne({ username: parsedToken.username });
         if (user) {
-            return;
+            return user;
         } else {
             next("invalid token or user");
         }

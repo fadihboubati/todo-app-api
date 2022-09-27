@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const handle404Error = require("./error-handlers/404");
 const handle500Error = require("./error-handlers/500");
 const authRoutes = require("./routes/auth");
+const taskRoutes = require("./routes/tasks");
 
 async function start(port, database_url) {
     // await mongoose.createConnection(database_url).asPromise();
@@ -24,6 +25,7 @@ function handleWelcomePage(req, res) {
 }
 
 app.use("/auth", authRoutes);
+app.use("/tasks", taskRoutes)
 
 app.use(handle404Error);
 app.use(handle500Error);

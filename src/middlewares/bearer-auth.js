@@ -15,7 +15,8 @@ module.exports = async function (req, res, next) {
         let token = basicHeaderParts[1];
 
         UserModer.authenticateToken(token, next)
-            .then(_ => {
+            .then(userInfo => {
+                req.user = userInfo
                 next();
             })
 
