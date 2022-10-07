@@ -13,7 +13,8 @@ const bearerAuth = require("../middlewares/bearer-auth")
 
 router.post('/signin', basicAuth, async (req, res) => {
     const userInfo = req.user
-    res.status(200).send(userInfo)
+    // console.log({ userInfo });
+    res.status(200).json(userInfo)
 });
 
 router.post('/signup', async (req, res, next) => {

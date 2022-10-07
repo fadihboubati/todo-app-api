@@ -1,5 +1,6 @@
 "use strict";
-
+require("dotenv").config();
+const DEVMODE = process.env.DEVMODE;
 
 module.exports = (capability) => (req, res, next) => {
     try {
@@ -10,7 +11,7 @@ module.exports = (capability) => (req, res, next) => {
         next("Access Denied");
 
     } catch (error) {
-        console.log(error);
-        next("Invalid Login");
+        next(DEVMODE ? error.message : "Ops, Somethig wrong during singing up proccess");
+
     }
 }
