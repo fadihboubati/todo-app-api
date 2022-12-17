@@ -8,7 +8,8 @@ const bcrypt = require('bcrypt');
 const { userModel } = require("../models/index");
 
 const basicAuth = require("../middlewares/basic-auth")
-const bearerAuth = require("../middlewares/bearer-auth")
+const bearerAuth = require("../middlewares/bearer-auth");
+const { authSchema } = require("../../lib/validation_schema");
 
 
 router.post('/signin', basicAuth, async (req, res) => {
@@ -19,7 +20,9 @@ router.post('/signin', basicAuth, async (req, res) => {
 
 router.post('/signup', async (req, res, next) => {
     try {
-        const { username, password, role } = req.body;
+        const { role } = req.body;
+        const result = await authSchema.validateAsync({ username: req.body.username, password: req.body.password });
+        const { username, password } = result;
 
         const saltRounds = 10 // by default, "the cost-factor"
         const salt = bcrypt.genSaltSync(saltRounds);
@@ -44,6 +47,11 @@ router.post('/signup', async (req, res, next) => {
         });
 
     } catch (error) {
+        if (error.isJoi == true) {
+            req.statusCode = 442
+            error.status = 442
+        };
+
         next(DEVMODE ? error.message : "Ops, Somethig wrong during singing up proccess");
     }
 });
