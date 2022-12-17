@@ -28,7 +28,7 @@ function handleWelcomePage(req, res) {
 }
 
 app.use("/auth", authRoutes);
-app.use("/tasks", taskRoutes)
+app.use("/tasks", taskRoutes) // Did not finish
 
 app.use(handle404Error);
 app.use(handle500Error);

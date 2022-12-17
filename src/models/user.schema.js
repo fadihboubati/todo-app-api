@@ -1,4 +1,5 @@
 'use strict';
+// We Did not use it --
 const UserSchema = (mongoose) => new mongoose.Schema({
     username: {
         required: true,
